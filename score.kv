@@ -1,0 +1,73 @@
+<StartPage>:
+    name: "start"
+
+    n: player_number
+
+    FloatLayout:
+
+        Label:
+            text: "Number of Players: "
+            font_size: 60
+            pos_hint: {"x": 0.33, "top": 0.7}
+            size_hint: 0.25, 0.15
+
+        TextInput:
+            id: player_number
+            font_size: 60
+            multiline: False
+            pos_hint: {"x": 0.69, "top": 0.65}
+            size_hint: 0.08, 0.04
+
+        Button:
+            background_color: (0, 0.75, 0.75, 1)
+            pos_hint: {"x": 0.2, "y": 0.25}
+            size_hint: (0.6, 0.15)
+            text: "Start"
+            font_size: 60
+            on_release:
+                root.manager.transition.direction = "up"
+                root.Start_Game()
+
+
+<PlayersPage>:
+    name: "players"
+
+    player_name: name
+
+    FloatLayout:
+
+        Label:
+            text: "Name: "
+            font_size: 60
+            pos_hint: {"x": 0.175, "top": 0.7}
+            size_hint: 0.25, 0.15
+
+        TextInput:
+            id: name
+            font_size: 60
+            multiline: False
+            pos_hint: {"x": 0.39, "top": 0.65}
+            size_hint: 0.4, 0.04
+
+        Button:
+            background_color: (0, 0.75, 0.75, 1)
+            pos_hint: {"x": 0.2, "y": 0.25}
+            size_hint: (0.6, 0.15)
+            text: "Submit"
+            font_size: 60
+            on_release:
+                root.manager.transition.direction = "up"
+                root.Submit()
+
+
+<Bid_Win_Page>:
+    name: "bids_wins"
+
+    GridLayout:
+        rows: 1
+        Button:
+            background_color: (0, 0.75, 0.75, 1)
+            text: "Start"
+            font_size: (root.width**2 + root.height**2) / 14**4
+            on_release:
+                root.Start_Bid()
