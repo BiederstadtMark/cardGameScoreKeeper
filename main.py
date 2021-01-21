@@ -10,6 +10,8 @@ from kivy.uix.togglebutton import ToggleButton
 from kivy.core.window import Window
 import sys
 
+# Below are all the global variables required for the application
+
 number_of_players = 2
 
 Players = []
@@ -25,12 +27,14 @@ trump = 'Clubs'
 player_entry = 0
 
 
+# class PlayerInfo stores all the information for each player, such as name, bid and score.
 class PlayerInfo:
     Name = ""
     Bid = 0
     Score = 0
     Hands_Won = 0
 
+    # the initialization function simply sets the player's name to an empty string, and all numeric values to zero
     def __init__(self):
         self.Name = ""
         self.Bid = 0
@@ -38,7 +42,10 @@ class PlayerInfo:
         self.Hands_Won = 0
 
 
+# class Bid_Win_Layout takes care of the layout of the screen during the game, as well as on the final screen
 class Bid_Win_Layout(GridLayout):
+
+    # the initialization function builds the very first bid screen upon starting the game.
     def __init__(self, **kwargs):
         super(Bid_Win_Layout, self).__init__(**kwargs)
         self.clear_widgets()
@@ -113,6 +120,8 @@ class Bid_Win_Layout(GridLayout):
         self.again = Button(text="Play Again", font_size=40, background_color=[0, 1, 0.1, 1])
         self.quit = Button(text="Quit", font_size=40, background_color=[1, 0, 0.25, 1])
 
+    # update_to_bids is the function that updates the screen so that bids cah be entered, and so that
+    # the toggle buttons have the appropriate bid for each player
     def update_to_bids(self):
         self.clear_widgets()
         self.rows = 3
@@ -209,6 +218,8 @@ class Bid_Win_Layout(GridLayout):
 
         self.add_widget(self.inside2)
 
+    # update_to_wins is a member function that updates the screen so that the number of hands won by each player can
+    # be entered, it is also called to keep the information on the screen current
     def update_to_wins(self):
         self.clear_widgets()
         self.rows = 3
@@ -305,6 +316,8 @@ class Bid_Win_Layout(GridLayout):
 
         self.add_widget(self.inside2)
 
+    # update_to_final is only called once per game, at the end to display the final scores, and give the player
+    # the option to either play again, or quit
     def update_to_final(self):
         self.clear_widgets()
         self.rows = 3
@@ -324,6 +337,8 @@ class Bid_Win_Layout(GridLayout):
         self.quit.bind(on_release=done)
         self.add_widget(self.quit)
 
+    # same is called when the player pushes the play again button, it restarts the game with the same players
+    # after setting all relevant values to 0
     def same(self, instance):
         global round_counter
         global trump
@@ -335,6 +350,8 @@ class Bid_Win_Layout(GridLayout):
         trump = 'Clubs'
         self.update_to_bids()
 
+    # win_pressed is called whenever a button is pressed on the screen to select the number of hands,
+    # it updates data appropriately depending on the toggle selected and the button pressed.
     def win_pressed(self, instance):
         global round_counter
         try:
@@ -365,6 +382,8 @@ class Bid_Win_Layout(GridLayout):
             else:
                 self.update_to_final()
 
+    # bid_pressed is called whenever a button is pressed on the screen to select the bids for each player,
+    # it updates data appropriately depending on the toggle selected and the button pressed.
     def bid_pressed(self, instance):
         try:
             bid = int(instance.text)
@@ -377,19 +396,26 @@ class Bid_Win_Layout(GridLayout):
             self.update_to_wins()
 
 
+# class Bid_Win_Page initially displays a button to start the game, and then adds the gridlayout created by
+# Bid_Win_Layout so that the game can be played. the gridlayout is added after the Start_Bid member function is called
+# when the "Start" button is pressed
 class Bid_Win_Page(Screen):
     def Start_Bid(self):
         self.clear_widgets()
         self.add_widget(Bid_Win_Layout())
-        nowonbidpage()
+        nowOnBidPage()
 
 
+# class PlayersPage allows the user to add the name of each player according to the number of players entered on the
+# first screen
 class PlayersPage(Screen):
     player_name = ObjectProperty(None)
 
+    # reset clears the text entry window so that another name can be entered
     def reset(self):
         self.player_name.text = ""
 
+    # Submit checks that the name field is not empty, and then adds the name entered to the players list.
     def Submit(self):
         global player_entry
         name = str(self.player_name.text)
@@ -406,9 +432,12 @@ class PlayersPage(Screen):
             invalidPlayerName()
 
 
+# class StartPage asks the user to enter a number of players, checks that the number is valid,
+# and then proceeds to PlayersPage
 class StartPage(Screen):
     n = ObjectProperty(None)
 
+    # Start_Game verifies that the number of players entered is valid, and then proceeds to PlayersPage
     def Start_Game(self):
         try:
             number_players = int(self.n.text)
@@ -426,22 +455,28 @@ class StartPage(Screen):
             invalidNumberOfPlayers()
             self.reset()
 
+    # reset clears the text entry field
     def reset(self):
         self.n.text = ""
 
+    # modify_player_num updates the global variable number_of_players with the correct number of players as entered
     def modify_player_num(self):
         global number_of_players
         number_of_players = int(self.n.text)
 
 
+# WindowManager allows for navigation between different screens
 class WindowManager(ScreenManager):
     pass
 
 
+# done ends the program
 def done(instance):
     sys.exit()
 
 
+# each of functions invalidNumberOfPlayers through to nowOnBidPage opens a popup window to either display an error
+# message, or to give instructions to the user.
 def invalidNumberOfPlayers() -> None:
     pop = Popup(title="Invalid Player Number",
                 content=Label(text='Invalid number of players,\n please enter an integer greater than 1.'),
@@ -467,7 +502,7 @@ def invalidNumberOfHandsWon() -> None:
     pop.open()
 
 
-def nowonbidpage() -> None:
+def nowOnBidPage() -> None:
     pop = Popup(title='Now On Bid Page',
                 content=Label(text='Please enter the bid\nfor each player,\nthen press "Next" when ready'
                                    '\ngreen buttons mean the current page\nis for entering bids,\n'
@@ -477,17 +512,22 @@ def nowonbidpage() -> None:
     pop.open()
 
 
+# kv and the builder insure that the kivy file is opened properly
 kv = Builder.load_file('score.kv')
 
+# sm is used to set the current screen
 sm = WindowManager()
 
+# each of the screens that will be used later is created and named
 screens = [StartPage(name="start"), PlayersPage(name="players"), Bid_Win_Page(name="bids_wins")]
 for screen in screens:
     sm.add_widget(screen)
 
+# the initial screen is set to start
 sm.current = "start"
 
 
+# class ScoreApp creates the app and changes the background colour
 class ScoreApp(App):
     def build(self):
         Window.clearcolor = (0.208, 0.396, 0.302, 1)

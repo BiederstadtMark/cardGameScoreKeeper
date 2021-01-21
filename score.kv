@@ -1,3 +1,5 @@
+# StartPage creates the layout for the first screen, note that scaling is made with a phone screen in mind,
+# and text will likely not fit well when run on a computer
 <StartPage>:
     name: "start"
 
@@ -29,6 +31,8 @@
                 root.Start_Game()
 
 
+# PlayersPage creates the layout for the page on which players names are entered, once again scaling is designed for a
+# phone screen
 <PlayersPage>:
     name: "players"
 
@@ -60,6 +64,9 @@
                 root.Submit()
 
 
+# Bid_Win_Page simply creates a start button, which when pressed starts the game. all layouts are done in python from
+# here on as it facilitates data use for creating layouts, such as creating a number of toggles equal to the number of
+# players, and updating bids, scores, and hands won
 <Bid_Win_Page>:
     name: "bids_wins"
 
