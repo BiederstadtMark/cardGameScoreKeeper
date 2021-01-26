@@ -528,11 +528,11 @@ sm.current = "start"
 
 
 # class ScoreApp creates the app and changes the background colour
-class ScoreApp(App):
+class MyApp(App):
     def build(self):
         Window.clearcolor = (0.208, 0.396, 0.302, 1)
         return sm
 
 
 if __name__ == '__main__':
-    ScoreApp().run()
+    MyApp().run()
