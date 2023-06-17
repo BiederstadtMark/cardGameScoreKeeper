@@ -9,30 +9,41 @@
 
         Label:
             text: "Number of Players: "
-            font_size: 60
-            pos_hint: {"x": 0.33, "top": 0.7}
-            size_hint: 0.25, 0.15
+            font_size: "38sp"#self.width*0.1
+            halign: "center"
+            valign: "center"
+            pos_hint: {"x": 0.1, "y": 0.65}
+            size_hint: (0.8, 0.1)
 
         TextInput:
             id: player_number
-            font_size: 60
+            font_size: "38sp"
             multiline: False
-            pos_hint: {"x": 0.69, "top": 0.65}
-            size_hint: 0.08, 0.04
+            halign: "center"
+            valign: "center"
+            pos_hint: {"x": 0.425, "y": 0.55}
+            size_hint: (0.15, 0.075)
 
         Button:
             background_color: (0, 0.75, 0.75, 1)
             pos_hint: {"x": 0.2, "y": 0.25}
             size_hint: (0.6, 0.15)
             text: "Start"
-            font_size: 60
+            font_size: "48sp"
             on_release:
                 root.manager.transition.direction = "up"
                 root.Start_Game()
 
+        Button:
+            background_color: (0, 0.75, 0.75, 1)
+            pos_hint: {"x": 0.6, "y": 0.95}
+            size_hint: (0.4, 0.05)
+            text: "Game Rules"
+            on_release: root.rules_popup()
 
-# PlayersPage creates the layout for the page on which players names are entered, once again scaling is designed for a
-# phone screen
+
+# PlayersPage creates the layout for the page on which players
+# names are entered, once again scaling is designed for a phone screen
 <PlayersPage>:
     name: "players"
 
@@ -42,39 +53,50 @@
 
         Label:
             text: "Name: "
-            font_size: 60
-            pos_hint: {"x": 0.175, "top": 0.7}
-            size_hint: 0.25, 0.15
+            font_size: "38sp"
+            halign: "center"
+            valign: "center"
+            pos_hint: {"x": 0.25, "y": 0.65}
+            size_hint: (0.5, 0.1)
 
         TextInput:
             id: name
-            font_size: 60
+            font_size: "38sp"
+            halign: "center"
+            valign: "center"
             multiline: False
-            pos_hint: {"x": 0.39, "top": 0.65}
-            size_hint: 0.4, 0.04
+            pos_hint: {"x": 0.15, "y": 0.55}
+            size_hint: (0.7, 0.075)
 
         Button:
             background_color: (0, 0.75, 0.75, 1)
             pos_hint: {"x": 0.2, "y": 0.25}
             size_hint: (0.6, 0.15)
             text: "Submit"
-            font_size: 60
+            font_size: "48sp"
             on_release:
                 root.manager.transition.direction = "up"
                 root.Submit()
 
 
-# Bid_Win_Page simply creates a start button, which when pressed starts the game. all layouts are done in python from
-# here on as it facilitates data use for creating layouts, such as creating a number of toggles equal to the number of
+# Bid_Win_Page simply creates a start button, which when pressed starts the game.
+# all layouts are done in python from here on as it facilitates data use for creating
+# layouts, such as creating a number of toggles equal to the number of
 # players, and updating bids, scores, and hands won
 <Bid_Win_Page>:
     name: "bids_wins"
 
+    start_layout: start_layout.__self__
+
+    on_enter:
+        root.clear_widgets()
+        root.add_widget(start_layout)
+
     GridLayout:
+        id: start_layout
         rows: 1
         Button:
             background_color: (0, 0.75, 0.75, 1)
             text: "Start"
             font_size: (root.width**2 + root.height**2) / 14**4
-            on_release:
-                root.Start_Bid()
+            on_release: root.Start_Bid()
